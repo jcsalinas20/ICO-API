@@ -1,6 +1,7 @@
-var express = require('express')
-var http = require('http')
-var app = express()
+var express = require('express');
+var http = require('http');
+require('dotenv').config();
+var app = express();
 
 /*
     MÉTODO PARA AUTENTICAR UN USUARIO:
@@ -41,6 +42,6 @@ app.get('/', (req, res) => {
 })
 
 //INICIO EL SERVIDOR
-http.createServer(app).listen(8001, () => {
-  console.log('Se ha iniciado el servidor en el puerto 8001');
+http.createServer(app).listen(3000, () => {
+  console.log('Se ha iniciado el servidor en el puerto 3000');
 });
