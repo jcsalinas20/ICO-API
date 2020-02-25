@@ -42,6 +42,6 @@ app.get('/', (req, res) => {
 })
 
 //INICIO EL SERVIDOR
-http.createServer(app).listen(process.env.PORT | 2git000, () => {
+http.createServer(app).listen(process.env.PORT | 3000, () => {
   console.log('Se ha iniciado el servidor en el puerto ' + process.env.PORT);
 });
