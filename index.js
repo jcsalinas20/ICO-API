@@ -5,10 +5,10 @@ require("dotenv").config({ path: '.env'});
 var app = express();
 
 // Connect to the MongoDB cluster
-// MongoClient.connect(process.env.HOST, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true
-// });
+MongoClient.connect(process.env.HOST, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
 /*
     MÉTODO PARA AUTENTICAR UN USUARIO:
@@ -56,15 +56,6 @@ const host = process.env.HOST || '0.0.0.0';
 const port = process.env.PORT || 3000;
 
 //INICIO EL SERVIDOR
-// app.listen(port, host, () => {
-//     console.log("Example app listening on http://localhost:3000 !")
-// });
-MongoClient.connect(process.env.HOST, function( err, _client ) {
-    // si no ens podem connectar, sortim
-    if( err ) throw err;
-    mongoClient = _client;
-    // si no hi ha cap error de connexió, engeguem el servidor
-    app.listen(port, host, () => {
-        console.log('Example app listening on http://localhost:3000 !');
-    });
+app.listen(port, host, () => {
+    console.log("Example app listening on http://localhost:3000 !")
 });
