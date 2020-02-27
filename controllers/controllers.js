@@ -1,7 +1,8 @@
 const Users = require("../models/Users")
+const Encrypt = require("../encrypt")
 
 exports.users = (req, res) => {
-    let respuesta;
+    let respuesta
     res.send("API REST")
     const users = new Users({
         username: req.params.username,
@@ -9,22 +10,30 @@ exports.users = (req, res) => {
         privileges: "user"
     })
     try {
-        let resultado = users.save();
+        let resultado = users.save()
         respuesta = {
-            mensaje: 'Insertado correctamente',
+            mensaje: "Insertado correctamente",
             user: resultado.password
-        };
+        }
     } catch (error) {
-        console.log(error);
+        console.log(error)
         respuesta = {
-            error: 'Error insertando'
-        };
+            error: "Error insertando"
+        }
     }
-    res.json(respuesta);
+    res.json(respuesta)
 }
 
 exports.doctores = (req, res) => {
-    Users.findOne({ username: req.params.username }).exec(function(err, doc){
-        res.json(doc);
-    });
+    let passEncriptada = Encrypt.encrypt(req.params.password)
+    Users.findOne({
+        username: req.params.username,
+        password: passEncriptada
+    }).exec(function(err, doc) {
+        if (doc === null) {
+            res.send("ERROR NO SE ENCONTRO EL USER.")
+        } else {
+            res.json(doc)
+        }
+    })
 }

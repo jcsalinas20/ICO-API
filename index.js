@@ -29,5 +29,5 @@ console.log("Conexion con la Base de Datos establecida.")
 app.use("/", router())
 
 app.listen(port, () => {
-    console.log("API REST corriendo en http://localhost:" + port)
+    console.log("API REST corriendo en el puerto " + port)
 })
