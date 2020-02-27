@@ -1,9 +1,5 @@
 const Users = require("../models/Users")
 
-exports.home = (req, res) => {
-    res.send("API REST")
-}
-
 exports.users = (req, res) => {
     let respuesta;
     res.send("API REST")
