@@ -1,4 +1,9 @@
 const Users = require("../models/Users")
+const Pacientes = require("../models/Pacientes")
+const Doctores = require("../models/Doctores")
+const Medicamentos = require("../models/Medicamentos")
+const Consultas = require("../models/Consultas")
+const Users = require("../models/Users")
 const Encrypt = require("../encrypt")
 
 exports.users = (req, res) => {
