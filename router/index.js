@@ -11,5 +11,7 @@ module.exports = () => {
 
     router.get("/api/:dni/medicamentos", controllers.pacienteListaMed)
 
+    router.get("/api/:dni/consultas", controllers.pacienteListaConsultas)
+
     return router;
 }

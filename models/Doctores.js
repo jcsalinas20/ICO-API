@@ -2,10 +2,6 @@ const mongo = require('mongoose');
 const Schema = mongo.Schema;
 
 const docSchema = new Schema({
-    id: {
-        type: 'Number',
-        trim: true
-    },
     nombre: {
         type: 'String',
         trim: true

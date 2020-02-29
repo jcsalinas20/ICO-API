@@ -1,9 +1,5 @@
-const Users = require("../models/Users")
 const Pacientes = require("../models/Pacientes")
 const Doctores = require("../models/Doctores")
-const Medicamentos = require("../models/Medicamentos")
-const Consultas = require("../models/Consultas")
-const Encrypt = require("../encrypt")
 
 // exports.users = (req, res) => {
 //     let respuesta
@@ -35,7 +31,8 @@ exports.getDoctor = (req, res) => {
         if (doc === null) {
             res.send("ERROR, no se encontro el Doctor.")
         } else {
-            res.json(doc)
+            res.header("Content-Type",'application/json');
+            res.send(JSON.stringify(doc, null, 2));
         }
     })
 }
@@ -58,10 +55,24 @@ exports.pacienteListaMed = (req, res) => {
     Pacientes.findOne({
         dni: req.params.dni,
     }).exec(function(err, doc) {
-        if (doc === null) {
+        if (doc.medicamentos.length === 0) {
             res.send("No hay ningún medicamento.")
         } else {
-            res.json(doc.medicamentos)
+            res.header("Content-Type",'application/json');
+            res.send(JSON.stringify(doc.medicamentos, null, 2));
+        }
+    })
+}
+
+exports.pacienteListaConsultas = (req, res) => {
+    Pacientes.findOne({
+        dni: req.params.dni,
+    }).exec(function(err, doc) {
+        if (doc.consultas.length === 0) {
+            res.send("No hay ninguna consulta.")
+        } else {
+            res.header("Content-Type",'application/json');
+            res.send(JSON.stringify(doc.consultas, null, 2));
         }
     })
 }

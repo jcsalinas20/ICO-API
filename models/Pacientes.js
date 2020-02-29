@@ -1,6 +1,7 @@
 const mongo = require("mongoose")
 const Schema = mongo.Schema
 
+// Datos de los dias que tiene que tomar las pastillas
 var DiasParaTomar = new Schema({
     lunes: Number,
     martes: Number,
@@ -11,6 +12,7 @@ var DiasParaTomar = new Schema({
     domingo: Number
 })
 
+// Datos del medicamento que tiene que tomar
 var DatosMedicamento = new Schema({
     nombre: String,
     dias: DiasParaTomar,
@@ -18,11 +20,18 @@ var DatosMedicamento = new Schema({
     imagen: String
 })
 
+// Datos de la consulta del paciente
+var DatosConsulta = new Schema ({
+    nombre_doc: String,
+    hora: String,
+    dia: String,
+    planta: Number,
+    numero_sala: Number,
+    direccion: String
+});
+
+// Schema general del Paciente
 const pacientesSchema = new Schema({
-    id_paciente: {
-        type: Number,
-        trim: true
-    },
     nombre: {
         type: String,
         trim: true
@@ -43,8 +52,8 @@ const pacientesSchema = new Schema({
         type: String,
         trim: true
     },
-    medicamentos: [DatosMedicamento]
-    // consultas: [Number]
+    medicamentos: [DatosMedicamento],
+    consultas: [DatosConsulta]
 })
 
 
