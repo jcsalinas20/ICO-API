@@ -40,4 +40,4 @@ const pacientesSchema = new Schema({
     }
 });
 
-module.exports = mongo.model('Pacientes', pacientesSchema);
+module.exports = mongo.model('Pacientes', pacientesSchema, 'Pacientes');

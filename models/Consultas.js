@@ -32,4 +32,4 @@ const consultasSchema = new Schema({
     },
 });
 
-module.exports = mongo.model('Consultas', consultasSchema);
+module.exports = mongo.model('Consultas', consultasSchema, 'Consultas');

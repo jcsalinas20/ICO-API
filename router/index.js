@@ -3,9 +3,9 @@ const router = express.Router()
 const controllers = require("../controllers/controllers")
 
 module.exports = () => {
-    router.get("/users/:username/:password", controllers.users)
+    // router.get("/users/:username/:password", controllers.users)
 
-    router.get("/api/doctores/:username/:password", controllers.doctores)
+    router.get("/api/doctores/:username", controllers.getDoctor)
 
     return router;
 }

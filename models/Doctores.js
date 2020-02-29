@@ -11,19 +11,14 @@ const docSchema = new Schema({
         trim: true
     },
     username: {
-        type: 'Number',
+        type: 'String',
         trim: true
     },
     password: {
-        type: 'Number',
+        type: 'String',
         trim: true
     },
-    consultas: {
-        id_consulta: {
-            type: 'Number',
-            trim: true
-        }
-    }
+    consultas: [Number]
 });
 
-module.exports = mongo.model('Doctores', docSchema);
+module.exports = mongo.model('Doctores', docSchema, 'Doctores');

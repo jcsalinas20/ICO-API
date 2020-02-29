@@ -12,4 +12,4 @@ const medicamentosSchema = new Schema({
     }
 });
 
-module.exports = mongo.model('Medicamentos', medicamentosSchema);
+module.exports = mongo.model('Medicamentos', medicamentosSchema, 'Medicamentos');
