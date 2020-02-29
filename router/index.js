@@ -7,5 +7,9 @@ module.exports = () => {
 
     router.get("/api/doctores/:username", controllers.getDoctor)
 
+    router.get("/api/paciente/auth/:dni/:password", controllers.loginPaciente)
+
+    router.get("/api/:dni/medicamentos", controllers.pacienteListaMed)
+
     return router;
 }

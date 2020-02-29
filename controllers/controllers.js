@@ -29,7 +29,6 @@ const Encrypt = require("../encrypt")
 // }
 
 exports.getDoctor = (req, res) => {
-    console.log(req.params.username)
     Doctores.findOne({
         username: req.params.username
     }).exec(function(err, doc) {
@@ -37,6 +36,32 @@ exports.getDoctor = (req, res) => {
             res.send("ERROR, no se encontro el Doctor.")
         } else {
             res.json(doc)
+        }
+    })
+}
+
+exports.loginPaciente = (req, res) => {
+    console.log(req.params.dni)
+    Pacientes.findOne({
+        dni: req.params.dni,
+        password: req.params.password
+    }).exec(function(err, doc) {
+        if (doc === null) {
+            res.send("ERROR, no se encontro el Usuario.")
+        } else {
+            res.send("El login se realizó correctamente.")
+        }
+    })
+}
+
+exports.pacienteListaMed = (req, res) => {
+    Pacientes.findOne({
+        dni: req.params.dni,
+    }).exec(function(err, doc) {
+        if (doc === null) {
+            res.send("No hay ningún medicamento.")
+        } else {
+            res.json(doc.medicamentos)
         }
     })
 }
