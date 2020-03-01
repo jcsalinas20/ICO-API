@@ -13,5 +13,7 @@ module.exports = () => {
 
     router.get("/api/:dni/consultas", controllers.pacienteListaConsultas)
 
+    router.get("/api/encrypt/:password", controllers.encrypt)
+
     return router;
 }
