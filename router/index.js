@@ -9,11 +9,13 @@ module.exports = () => {
 
     router.get("/api/paciente/auth/:dni/:password", controllers.loginPaciente)
 
-    router.get("/api/:dni/medicamentos", controllers.pacienteListaMed)
+    router.get("/api/:dni/medicamentos", controllers.pacienteListaMedicinas)
 
     router.get("/api/:dni/consultas", controllers.pacienteListaConsultas)
 
-    router.get("/api/encrypt/:password", controllers.encrypt)
+    router.get("/api/:dni/primer-inicio-sesion", controllers.pacientePrimerInicioSesion)
+
+    // router.get("/api/:dni/info-consulta", controllers.pacientePrimerInicioSesion)
 
     return router;
 }

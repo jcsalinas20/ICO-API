@@ -32,7 +32,7 @@ exports.getDoctor = (req, res) => {
     }).exec(function(err, doc) {
         if (doc === null) {
             respuesta = {
-                mensaje: "ERROR, no se encontro el Doctor."
+                mensaje: "ERROR, no se encontró el Doctor."
             }
             res.header("Content-Type", "application/json")
             res.send(JSON.stringify(respuesta, null, 2))
@@ -45,13 +45,14 @@ exports.getDoctor = (req, res) => {
 
 exports.loginPaciente = (req, res) => {
     let respuesta
+    var passEncriptada = Encriptation.encrypt(req.params.password)
     Pacientes.findOne({
         dni: req.params.dni,
-        password: req.params.password
+        password: passEncriptada
     }).exec(function(err, doc) {
         if (doc === null) {
             respuesta = {
-                mensaje: "ERROR, no se encontro el Usuario."
+                mensaje: "ERROR, no se encontró el Usuario."
             }
         } else {
             respuesta = {
@@ -63,7 +64,7 @@ exports.loginPaciente = (req, res) => {
     })
 }
 
-exports.pacienteListaMed = (req, res) => {
+exports.pacienteListaMedicinas = (req, res) => {
     Pacientes.findOne({
         dni: req.params.dni
     }).exec(function(err, doc) {
@@ -89,12 +90,15 @@ exports.pacienteListaConsultas = (req, res) => {
     })
 }
 
-exports.encrypt = (req, res) => {
-    let respuesta
-    var pass = Encriptation.encrypt(req.params.password)
-    respuesta = {
-        password: pass
-    }
-    res.header("Content-Type", "application/json")
-    res.send(JSON.stringify(respuesta, null, 2))
+exports.pacientePrimerInicioSesion = (req, res) => {
+    Pacientes.findOne({
+        dni: req.params.dni
+    }).exec(function(err, doc) {
+        if (doc.consultas.length === 0) {
+            res.send("No hay ninguna consulta.")
+        } else {
+            res.header("Content-Type", "application/json")
+            res.send(JSON.stringify(doc.primerInicioSesion, null, 2))
+        }
+    })
 }
