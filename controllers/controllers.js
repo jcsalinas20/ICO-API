@@ -131,6 +131,7 @@ exports.pacientePrimerInicioSesion = (req, res) => {
 
 exports.pacienteCambioPassword = (req, res) => {
     let respuesta
+    let passEncriptada = Encriptation.encrypt(req.params.password)
     Pacientes.findOne({
         dni: req.params.dni
     }).exec(function (err, doc) {
@@ -144,7 +145,7 @@ exports.pacienteCambioPassword = (req, res) => {
             Pacientes.updateOne({
                 dni: doc.dni
             }, {
-                password: req.params.password
+                password: passEncriptada
             }, {
                 new: true
             }, (err, raw) => {
