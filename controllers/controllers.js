@@ -29,7 +29,7 @@ exports.getDoctor = (req, res) => {
     let respuesta
     Doctores.findOne({
         username: req.params.username
-    }).exec(function(err, doc) {
+    }).exec(function (err, doc) {
         if (doc === null) {
             respuesta = {
                 mensaje: "ERROR, no se encontró el Doctor."
@@ -49,7 +49,7 @@ exports.loginPaciente = (req, res) => {
     Pacientes.findOne({
         dni: req.params.dni,
         password: passEncriptada
-    }).exec(function(err, doc) {
+    }).exec(function (err, doc) {
         if (doc === null) {
             respuesta = {
                 mensaje: "ERROR, no se encontró el Usuario."
@@ -67,9 +67,19 @@ exports.loginPaciente = (req, res) => {
 exports.pacienteListaMedicinas = (req, res) => {
     Pacientes.findOne({
         dni: req.params.dni
-    }).exec(function(err, doc) {
-        if (doc.medicamentos.length === 0) {
-            res.send("No hay ningún medicamento.")
+    }).exec(function (err, doc) {
+        if (doc === null) {
+            respuesta = {
+                mensaje: 'ERROR, no se encontró el Usuario'
+            }
+            res.header("Content-Type", "application/json")
+            res.send(JSON.stringify(respuesta, null, 2))
+        } else if (doc.medicamentos.length === 0) {
+            respuesta = {
+                mensaje: 'No hay ningún medicamento'
+            }
+            res.header("Content-Type", "application/json")
+            res.send(JSON.stringify(respuesta, null, 2))
         } else {
             res.header("Content-Type", "application/json")
             res.send(JSON.stringify(doc.medicamentos, null, 2))
@@ -78,11 +88,22 @@ exports.pacienteListaMedicinas = (req, res) => {
 }
 
 exports.pacienteListaConsultas = (req, res) => {
+    let respuesta
     Pacientes.findOne({
         dni: req.params.dni
-    }).exec(function(err, doc) {
-        if (doc.consultas.length === 0) {
-            res.send("No hay ninguna consulta.")
+    }).exec(function (err, doc) {
+        if (doc === null) {
+            respuesta = {
+                mensaje: 'ERROR, no se encontró el Usuario'
+            }
+            res.header("Content-Type", "application/json")
+            res.send(JSON.stringify(respuesta, null, 2))
+        } else if (doc.consultas.length === 0) {
+            respuesta = {
+                mensaje: 'No hay ninguna consulta'
+            }
+            res.header("Content-Type", "application/json")
+            res.send(JSON.stringify(respuesta, null, 2))
         } else {
             res.header("Content-Type", "application/json")
             res.send(JSON.stringify(doc.consultas, null, 2))
@@ -91,14 +112,54 @@ exports.pacienteListaConsultas = (req, res) => {
 }
 
 exports.pacientePrimerInicioSesion = (req, res) => {
+    let respuesta
     Pacientes.findOne({
         dni: req.params.dni
-    }).exec(function(err, doc) {
-        if (doc.consultas.length === 0) {
-            res.send("No hay ninguna consulta.")
+    }).exec(function (err, doc) {
+        if (doc === null) {
+            respuesta = {
+                mensaje: 'ERROR, no se encontró el Usuario'
+            }
+            res.header("Content-Type", "application/json")
+            res.send(JSON.stringify(respuesta, null, 2))
         } else {
             res.header("Content-Type", "application/json")
             res.send(JSON.stringify(doc.primerInicioSesion, null, 2))
         }
     })
+}
+
+exports.pacienteCambioPassword = (req, res) => {
+    let respuesta
+    Pacientes.findOne({
+        dni: req.params.dni
+    }).exec(function (err, doc) {
+        if (doc === null) {
+            respuesta = {
+                mensaje: 'ERROR, no se encontró el Usuario'
+            }
+            res.header("Content-Type", "application/json")
+            res.send(JSON.stringify(respuesta, null, 2))
+        } else {
+            Pacientes.updateOne({
+                dni: doc.dni
+            }, {
+                password: req.params.password
+            }, {
+                new: true
+            }, (err, raw) => {
+                if (err) {
+                    respuesta = {
+                        mensaje: 'No se ha podido actualizar la contraseña'
+                    }
+                }
+                respuesta = {
+                    mensaje: 'Se ha actualizar la contraseña correctamente.'
+                }
+                res.header("Content-Type", "application/json")
+                res.send(JSON.stringify(respuesta, null, 2))
+            })
+        }
+    })
+    //FALTA UPDATEAR EK DOCTOR
 }

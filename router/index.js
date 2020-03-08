@@ -15,6 +15,8 @@ module.exports = () => {
 
     router.get("/api/:dni/primer-inicio-sesion", controllers.pacientePrimerInicioSesion)
 
+    router.get("/api/:dni/cambio-password/:password", controllers.pacienteCambioPassword)
+
     // router.get("/api/:dni/info-consulta", controllers.pacientePrimerInicioSesion)
 
     return router;
