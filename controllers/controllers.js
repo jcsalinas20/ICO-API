@@ -162,5 +162,4 @@ exports.pacienteCambioPassword = (req, res) => {
             })
         }
     })
-    //FALTA UPDATEAR EK DOCTOR
 }

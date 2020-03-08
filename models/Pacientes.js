@@ -22,7 +22,8 @@ var DatosMedicamento = new Schema({
 
 // Datos de la consulta del paciente
 var DatosConsulta = new Schema({
-    nombre_doc: String,
+    nombre: String,
+    apellidos: String,
     hora: String,
     dia: String,
     planta: Number,
