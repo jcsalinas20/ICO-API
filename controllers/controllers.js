@@ -145,7 +145,8 @@ exports.pacienteCambioPassword = (req, res) => {
             Pacientes.updateOne({
                 dni: doc.dni
             }, {
-                password: passEncriptada
+                password: passEncriptada,
+                primerInicioSesion: false
             }, {
                 new: true
             }, (err, raw) => {
