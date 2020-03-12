@@ -120,9 +120,7 @@ exports.pacientePrimerInicioSesion = (req, res) => {
         dni: req.params.dni
     }).exec(function (err, doc) {
         if (doc === null) {
-            respuesta = {
-                mensaje: 'ERROR, no se encontró el Usuario'
-            }
+            respuesta = false
             res.header("Content-Type", "application/json")
             res.send(JSON.stringify(respuesta, null, 2))
         } else {
