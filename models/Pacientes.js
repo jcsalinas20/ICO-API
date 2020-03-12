@@ -14,25 +14,17 @@ var DiasParaTomar = new Schema({
 
 // Datos del medicamento que tiene que tomar
 var DatosMedicamento = new Schema({
-    nombre: String,
     dias: DiasParaTomar,
     hora: Array,
-    imagen: String
-})
-
-// Datos de la consulta del paciente
-var DatosConsulta = new Schema({
-    nombre: String,
-    apellidos: String,
-    hora: String,
-    dia: String,
-    planta: Number,
-    numero_sala: Number,
-    direccion: String
+    id: Number
 })
 
 // Schema general del Paciente
 const pacientesSchema = new Schema({
+    id_paciente: {
+        type: Number,
+        trim: true
+    },
     nombre: {
         type: String,
         trim: true
@@ -65,8 +57,7 @@ const pacientesSchema = new Schema({
         type: String,
         trim: true
     },
-    medicamentos: [DatosMedicamento],
-    consultas: [DatosConsulta]
+    medicamentos: [DatosMedicamento]
 })
 
 module.exports = mongo.model("Pacientes", pacientesSchema, "Pacientes")
