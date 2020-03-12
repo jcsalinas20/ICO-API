@@ -21,12 +21,14 @@ app.use(function(req, res, next) {
     next()
 })
 
+mongo.set('useFindAndModify', false);
 mongo.Promise = global.Promise
 mongo.connect(
     host,
     {
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
+        useFindAndModify: false
     },
     err => {
         if (err) {

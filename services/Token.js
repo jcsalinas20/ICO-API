@@ -2,20 +2,29 @@
 const sha1 = require("sha1")
 const moment = require("moment")
 const uuidv4 = require("uuid")
+const Pacientes = require("../models/Pacientes")
 
 module.exports = {
-    create: async function(body) {
+    create: async function (body) {
         const ORDER_ID = await getOrderId()
         const TIMESTAMP = await getMoment()
 
         const token = await createHash(ORDER_ID, TIMESTAMP, body.dni, body.password)
 
-        this.putToken(token, body)
+        await this.putToken(token, body)
 
         return token
     },
-    putToken: function(token, body) {
-        // METER TOKEN CON QUERY
+    putToken: async function (token2, body) {
+        const filter = {
+            dni: body.dni
+        }
+        const update = {
+            token: token2
+        }
+        await Pacientes.findOneAndUpdate(filter, update, {
+            useFindAndModify: false
+        })
     }
 }
 
