@@ -1,6 +1,7 @@
 const Pacientes = require("../models/Pacientes")
 const Doctores = require("../models/Doctores")
 const Encriptation = require("../encrypt")
+const Token = require("../services/Token")
 
 // exports.users = (req, res) => {
 //     let respuesta
@@ -49,14 +50,16 @@ exports.loginPaciente = (req, res) => {
     Pacientes.findOne({
         dni: req.params.dni,
         password: passEncriptada
-    }).exec(function (err, doc) {
+    }).exec(async function (err, doc) {
         if (doc === null) {
             respuesta = {
                 mensaje: "ERROR, no se encontró el Usuario."
             }
         } else {
+            const tokenHash = await Token.create(doc)
             respuesta = {
-                mensaje: "El login se realizó correctamente."
+                mensaje: "El login se realizó correctamente.",
+                token: `${tokenHash}`
             }
         }
         res.header("Content-Type", "application/json")

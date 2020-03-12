@@ -5,7 +5,7 @@ const controllers = require("../controllers/controllers")
 module.exports = () => {
     // router.get("/users/:username/:password", controllers.users)
 
-    router.get("/api/doctores/:username", controllers.getDoctor)
+    // router.get("/api/doctores/:username", controllers.getDoctor)
 
     router.get("/api/paciente/auth/:dni/:password", controllers.loginPaciente)
 
