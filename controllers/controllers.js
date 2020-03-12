@@ -1,30 +1,7 @@
 const Pacientes = require("../models/Pacientes")
 const Doctores = require("../models/Doctores")
-const Encriptation = require("../encrypt")
+const Encriptation = require("../services/Encrypt")
 const Token = require("../services/Token")
-
-// exports.users = (req, res) => {
-//     let respuesta
-//     res.send("API REST")
-//     const users = new Users({
-//         username: req.params.username,
-//         password: req.params.password,
-//         privileges: "user"
-//     })
-//     try {
-//         let resultado = users.save()
-//         respuesta = {
-//             mensaje: "Insertado correctamente",
-//             user: resultado.password
-//         }
-//     } catch (error) {
-//         console.log(error)
-//         respuesta = {
-//             error: "Error insertando"
-//         }
-//     }
-//     res.json(respuesta)
-// }
 
 exports.getDoctor = (req, res) => {
     let respuesta
