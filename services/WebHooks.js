@@ -9,7 +9,7 @@ module.exports = {
 }
 
 var comprobarHora = function call() {
-    fetch('http://localhost:3000/api/vaidacionToken')
+    fetch('https://api-ico.herokuapp.com/api/vaidacionToken')
         .then(function (res) {
             return res.json();
         })
