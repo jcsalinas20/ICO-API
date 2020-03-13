@@ -25,6 +25,7 @@
     "moment": "^2.24.0",
     "mongodb": "^3.5.4",
     "mongoose": "^5.9.2",
+    "node-fetch": "^2.6.0",
     "nodemon": "^2.0.2",
     "sha1": "^1.1.1",
     "uuid": "^7.0.2"

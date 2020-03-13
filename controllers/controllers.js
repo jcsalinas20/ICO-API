@@ -2,6 +2,7 @@ const Pacientes = require("../models/Pacientes")
 const Doctores = require("../models/Doctores")
 const Encriptation = require("../services/Encrypt")
 const Token = require("../services/Token")
+const moment = require('moment')
 
 exports.getDoctor = (req, res) => {
     let respuesta
@@ -141,4 +142,14 @@ exports.pacienteCambioPassword = (req, res) => {
             })
         }
     })
+}
+
+exports.vaidacionToken = async (req, res) => {
+    // let fecha = moment().format('DD-HH:mm:ss')
+    let fecha = moment().format('HH:mm:ss')
+    let respuesta = {
+        hora: fecha
+    }
+    res.header("Content-Type", "application/json")
+    res.send(JSON.stringify(respuesta, null, 2))
 }
