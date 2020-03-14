@@ -103,8 +103,8 @@ exports.pacienteListaConsultas = (req, res) => {
 
             let con = []
             for (let i = 0; i < Object.keys(consultas).length; i++) {
-                let consulta = {}
                 for (let j = 0; j < doc_consultas[i].consultas.length; j++) {
+                    let consulta = {}
                     consulta['id_consulta'] = doc_consultas[i].id_consulta
                     consulta['id_doctor'] = doc_consultas[i].id_doctor
                     consulta['id_paciente'] = doc_consultas[i].id_paciente
@@ -116,9 +116,8 @@ exports.pacienteListaConsultas = (req, res) => {
                     con = con.concat(consulta)
                 }
             }
-
+            
             for (let i = 0; i < con.length; i++) {
-                console.log()
                 for (let j = 0; j < con.length - 1; j++) {
                     if (con[j].dia === con[j + 1].dia) {
                         if (con[j].hora > con[j + 1].hora) {
