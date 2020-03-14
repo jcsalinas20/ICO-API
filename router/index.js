@@ -13,9 +13,9 @@ module.exports = () => {
 
     router.get("/api/:token/consultas", controllers.pacienteListaConsultas)
 
-    router.get("/api/:dni/primer-inicio-sesion", controllers.pacientePrimerInicioSesion)
+    router.get("/api/:token/primer-inicio-sesion", controllers.pacientePrimerInicioSesion)
 
-    router.get("/api/:dni/cambio-password/:password", controllers.pacienteCambioPassword)
+    router.get("/api/:token/cambio-password/:password", controllers.pacienteCambioPassword)
 
     router.get("/api/vaidacionToken", controllers.vaidacionToken)
 

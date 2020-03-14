@@ -105,18 +105,18 @@ exports.pacienteListaConsultas = (req, res) => {
             for (let i = 0; i < Object.keys(consultas).length; i++) {
                 for (let j = 0; j < doc_consultas[i].consultas.length; j++) {
                     let consulta = {}
-                    consulta['id_consulta'] = doc_consultas[i].id_consulta
-                    consulta['id_doctor'] = doc_consultas[i].id_doctor
-                    consulta['id_paciente'] = doc_consultas[i].id_paciente
-                    consulta['hora'] = consultas[i][j].hora
-                    consulta['dia'] = consultas[i][j].dia
-                    consulta['asistido'] = consultas[i][j].asistido
-                    consulta['notas'] = consultas[i][j].notas
-                    consulta['notas_doc'] = consultas[i][j].notas_doc
+                    consulta["id_consulta"] = doc_consultas[i].id_consulta
+                    consulta["id_doctor"] = doc_consultas[i].id_doctor
+                    consulta["id_paciente"] = doc_consultas[i].id_paciente
+                    consulta["hora"] = consultas[i][j].hora
+                    consulta["dia"] = consultas[i][j].dia
+                    consulta["asistido"] = consultas[i][j].asistido
+                    consulta["notas"] = consultas[i][j].notas
+                    consulta["notas_doc"] = consultas[i][j].notas_doc
                     con = con.concat(consulta)
                 }
             }
-            
+
             for (let i = 0; i < con.length; i++) {
                 for (let j = 0; j < con.length - 1; j++) {
                     if (con[j].dia === con[j + 1].dia) {
@@ -149,7 +149,7 @@ exports.pacienteListaConsultas = (req, res) => {
 exports.pacientePrimerInicioSesion = (req, res) => {
     let respuesta
     Pacientes.findOne({
-        dni: req.params.dni
+        token: req.params.token
     }).exec(function(err, doc) {
         if (doc === null) {
             respuesta = false
@@ -166,7 +166,7 @@ exports.pacienteCambioPassword = (req, res) => {
     let respuesta
     let passEncriptada = Encriptation.encrypt(req.params.password)
     Pacientes.findOne({
-        dni: req.params.dni
+        token: req.params.token
     }).exec(function(err, doc) {
         if (doc === null) {
             respuesta = {
@@ -177,7 +177,7 @@ exports.pacienteCambioPassword = (req, res) => {
         } else {
             Pacientes.updateOne(
                 {
-                    dni: doc.dni
+                    token: doc.token
                 },
                 {
                     password: passEncriptada,
