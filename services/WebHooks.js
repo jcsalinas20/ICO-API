@@ -14,7 +14,6 @@ var comprobarHora = function call() {
             return res.json();
         })
         .then(async function (myJson) {
-            console.log(myJson.hora)
             if (myJson.hora === '00:00:01') {
                 deleteToken()
             }
