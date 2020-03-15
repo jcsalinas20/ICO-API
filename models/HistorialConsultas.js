@@ -2,7 +2,6 @@ const mongo = require("mongoose")
 const Schema = mongo.Schema
 
 var infoConsulta = new Schema({
-    id_doctor: Number,
     hora: String,
     dia: String,
     asistido: Boolean,
@@ -12,6 +11,14 @@ var infoConsulta = new Schema({
 
 // Schema general del Paciente
 const hConsultasSchema = new Schema({
+    id_consulta: {
+        type: Number,
+        trim: true
+    },
+    id_doctor: {
+        type: Number,
+        trim: true
+    },
     id_paciente: {
         type: Number,
         trim: true

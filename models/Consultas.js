@@ -1,8 +1,7 @@
 const mongo = require("mongoose")
 const Schema = mongo.Schema
 
-// Datos del medicamento que tiene que tomar
-var DatosMedicamento = new Schema({
+var infoConsulta = new Schema({
     hora: String,
     dia: String,
     asistido: Boolean,
@@ -24,7 +23,7 @@ const consultasSchema = new Schema({
         type: Number,
         trim: true
     },
-    consultas: [DatosMedicamento]
+    consultas: [infoConsulta]
 })
 
 module.exports = mongo.model("Consultas", consultasSchema, "Consultas")
