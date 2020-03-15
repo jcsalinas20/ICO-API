@@ -164,7 +164,7 @@ exports.pacienteListaHistorialConsultas = (req, res) => {
             res.send(
                 JSON.stringify(
                     {
-                        respuesta: "No tienes ninguna consulta."
+                        respuesta: "No tienes ninguna consulta en el historial."
                     },
                     null,
                     2
@@ -180,7 +180,8 @@ exports.pacienteListaHistorialConsultas = (req, res) => {
                 res.send(
                     JSON.stringify(
                         {
-                            respuesta: "No tienes ninguna consulta."
+                            respuesta:
+                                "No tienes ninguna consulta en el historial."
                         },
                         null,
                         2
@@ -212,7 +213,7 @@ exports.pacienteListaHistorialConsultas = (req, res) => {
             for (let i = 0; i < con.length; i++) {
                 for (let j = 0; j < con.length - 1; j++) {
                     if (con[j].dia === con[j + 1].dia) {
-                        if (con[j].hora > con[j + 1].hora) {
+                        if (con[j].hora < con[j + 1].hora) {
                             let auxiliar = con[j]
                             con[j] = con[j + 1]
                             con[j + 1] = auxiliar
@@ -220,7 +221,7 @@ exports.pacienteListaHistorialConsultas = (req, res) => {
                     } else {
                         var dia1 = cambiarOrdenDate(con[j].dia)
                         var dia2 = cambiarOrdenDate(con[j + 1].dia)
-                        if (dia1 > dia2) {
+                        if (dia1 < dia2) {
                             let auxiliar = con[j]
                             con[j] = con[j + 1]
                             con[j + 1] = auxiliar
@@ -230,7 +231,7 @@ exports.pacienteListaHistorialConsultas = (req, res) => {
             }
 
             consultas = {
-                consultas: con
+                historial_consultas: con
             }
             res.header("Content-Type", "application/json")
             res.send(JSON.stringify(consultas, null, 2))
