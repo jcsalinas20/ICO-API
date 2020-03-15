@@ -23,6 +23,10 @@ const consultasSchema = new Schema({
         type: Number,
         trim: true
     },
+    id_direccion: {
+        type: Number,
+        trim: true
+    },
     consultas: [infoConsulta]
 })
 

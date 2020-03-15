@@ -117,6 +117,7 @@ exports.pacienteListaConsultas = (req, res) => {
                     consulta["id_consulta"] = doc_consultas[i].id_consulta
                     consulta["id_doctor"] = doc_consultas[i].id_doctor
                     consulta["id_paciente"] = doc_consultas[i].id_paciente
+                    consulta["id_direccion"] = doc_consultas[i].id_direccion
                     consulta["hora"] = consultas[i][j].hora
                     consulta["dia"] = consultas[i][j].dia
                     consulta["asistido"] = consultas[i][j].asistido
@@ -199,8 +200,9 @@ exports.pacienteListaHistorialConsultas = (req, res) => {
                 for (let j = 0; j < doc_consultas[i].consultas.length; j++) {
                     let consulta = {}
                     consulta["id_consulta"] = doc_consultas[i].id_consulta
-                    consulta["id_doctor"] = doc_consultas[i].id_doctor
                     consulta["id_paciente"] = doc_consultas[i].id_paciente
+                    consulta["id_direccion"] = doc_consultas[i].id_direccion
+                    consulta["doctor"] = doc_consultas[i].doctor
                     consulta["hora"] = consultas[i][j].hora
                     consulta["dia"] = consultas[i][j].dia
                     consulta["asistido"] = consultas[i][j].asistido

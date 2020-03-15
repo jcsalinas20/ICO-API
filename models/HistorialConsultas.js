@@ -15,15 +15,23 @@ const hConsultasSchema = new Schema({
         type: Number,
         trim: true
     },
-    id_doctor: {
+    id_paciente: {
         type: Number,
         trim: true
     },
-    id_paciente: {
+    id_direccion: {
         type: Number,
+        trim: true
+    },
+    doctor: {
+        type: String,
         trim: true
     },
     consultas: [infoConsulta]
 })
 
-module.exports = mongo.model("Historial_Consultas", hConsultasSchema, "Historial_Consultas")
+module.exports = mongo.model(
+    "Historial_Consultas",
+    hConsultasSchema,
+    "Historial_Consultas"
+)
