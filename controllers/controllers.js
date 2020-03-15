@@ -1,6 +1,7 @@
 const Pacientes = require("../models/Pacientes")
 const Doctores = require("../models/Doctores")
 const Consultas = require("../models/Consultas")
+const HistorialConsultas = require("../models/HistorialConsultas")
 const Medicamentos = require("../models/Medicamentos")
 const Hospitales = require("../models/Hospitales")
 const Encriptation = require("../services/Encrypt")
@@ -77,10 +78,101 @@ exports.pacienteListaConsultas = (req, res) => {
     }).exec(function(err, doc_paciente) {
         if (doc_paciente == null) {
             res.header("Content-Type", "application/json")
-            res.send(JSON.stringify(null, null, 2))
+            res.send(
+                JSON.stringify(
+                    {
+                        respuesta: "No tienes ninguna consulta."
+                    },
+                    null,
+                    2
+                )
+            )
             return
         }
         Consultas.find({
+            id_paciente: doc_paciente.id_paciente
+        }).exec(function(err, doc_consultas) {
+            if (doc_consultas.length == 0) {
+                res.header("Content-Type", "application/json")
+                res.send(
+                    JSON.stringify(
+                        {
+                            respuesta: "No tienes ninguna consulta."
+                        },
+                        null,
+                        2
+                    )
+                )
+                return
+            }
+            let consultas = {}
+            for (let i = 0; i < doc_consultas.length; i++) {
+                consultas[i] = doc_consultas[i].consultas
+            }
+
+            let con = []
+            for (let i = 0; i < Object.keys(consultas).length; i++) {
+                for (let j = 0; j < doc_consultas[i].consultas.length; j++) {
+                    let consulta = {}
+                    consulta["id_consulta"] = doc_consultas[i].id_consulta
+                    consulta["id_doctor"] = doc_consultas[i].id_doctor
+                    consulta["id_paciente"] = doc_consultas[i].id_paciente
+                    consulta["hora"] = consultas[i][j].hora
+                    consulta["dia"] = consultas[i][j].dia
+                    consulta["asistido"] = consultas[i][j].asistido
+                    consulta["notas"] = consultas[i][j].notas
+                    consulta["notas_doc"] = consultas[i][j].notas_doc
+                    con = con.concat(consulta)
+                }
+            }
+
+            for (let i = 0; i < con.length; i++) {
+                for (let j = 0; j < con.length - 1; j++) {
+                    if (con[j].dia === con[j + 1].dia) {
+                        if (con[j].hora > con[j + 1].hora) {
+                            let auxiliar = con[j]
+                            con[j] = con[j + 1]
+                            con[j + 1] = auxiliar
+                        }
+                    } else {
+                        var dia1 = cambiarOrdenDate(con[j].dia)
+                        var dia2 = cambiarOrdenDate(con[j + 1].dia)
+                        if (dia1 > dia2) {
+                            let auxiliar = con[j]
+                            con[j] = con[j + 1]
+                            con[j + 1] = auxiliar
+                        }
+                    }
+                }
+            }
+
+            consultas = {
+                consultas: con
+            }
+            res.header("Content-Type", "application/json")
+            res.send(JSON.stringify(consultas, null, 2))
+        })
+    })
+}
+
+exports.pacienteListaHistorialConsultas = (req, res) => {
+    Pacientes.findOne({
+        token: req.params.token
+    }).exec(function(err, doc_paciente) {
+        if (doc_paciente == null) {
+            res.header("Content-Type", "application/json")
+            res.send(
+                JSON.stringify(
+                    {
+                        respuesta: "No tienes ninguna consulta."
+                    },
+                    null,
+                    2
+                )
+            )
+            return
+        }
+        HistorialConsultas.find({
             id_paciente: doc_paciente.id_paciente
         }).exec(function(err, doc_consultas) {
             if (doc_consultas.length == 0) {

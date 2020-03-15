@@ -13,6 +13,8 @@ module.exports = () => {
 
     router.get("/api/:token/consultas", controllers.pacienteListaConsultas)
 
+    router.get("/api/:token/historial-consultas", controllers.pacienteListaHistorialConsultas)
+
     router.get("/api/:token/primer-inicio-sesion", controllers.pacientePrimerInicioSesion)
 
     router.get("/api/:token/cambio-password/:password", controllers.pacienteCambioPassword)
