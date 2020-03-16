@@ -51,7 +51,7 @@ exports.loginPaciente = (req, res) => {
 
 exports.pacienteListaMedicinas = (req, res) => {
     Pacientes.findOne({
-        dni: req.params.dni
+        token: req.params.token
     }).exec(function(err, doc) {
         if (doc === null) {
             respuesta = {
@@ -66,8 +66,31 @@ exports.pacienteListaMedicinas = (req, res) => {
             res.header("Content-Type", "application/json")
             res.send(JSON.stringify(respuesta, null, 2))
         } else {
+            let med = []
+            for (let i = 0; i < doc.medicamentos.length; i++) {
+                let medicamento = {}
+                medicamento["id"] = doc.medicamentos[i].id
+                const dias = {
+                    lunes: doc.medicamentos[i].dias.lunes,
+                    martes: doc.medicamentos[i].dias.martes,
+                    miercoles: doc.medicamentos[i].dias.miercoles,
+                    jueves: doc.medicamentos[i].dias.jueves,
+                    viernes: doc.medicamentos[i].dias.viernes,
+                    sabado: doc.medicamentos[i].dias.sabado,
+                    domingo: doc.medicamentos[i].dias.domingo
+                }
+                medicamento["dias"] = dias
+                medicamento["horas"] = doc.medicamentos[i].hora
+                medicamento["pastillaTomada"] = doc.medicamentos[i].pastillaTomada
+                med = med.concat(medicamento)
+            }
+
+            let medicamentos = {
+                medicamentos: med
+            }
+
             res.header("Content-Type", "application/json")
-            res.send(JSON.stringify(doc.medicamentos, null, 2))
+            res.send(JSON.stringify(medicamentos, null, 2))
         }
     })
 }

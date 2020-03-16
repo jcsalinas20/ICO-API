@@ -9,7 +9,7 @@ module.exports = () => {
 
     router.get("/api/paciente/auth/:dni/:password", controllers.loginPaciente)
 
-    router.get("/api/:dni/medicamentos", controllers.pacienteListaMedicinas)
+    router.get("/api/:token/medicamentos", controllers.pacienteListaMedicinas)
 
     router.get("/api/:token/consultas", controllers.pacienteListaConsultas)
 
@@ -20,6 +20,8 @@ module.exports = () => {
     router.get("/api/:token/cambio-password/:password", controllers.pacienteCambioPassword)
 
     router.get("/api/vaidacionToken", controllers.vaidacionToken)
+
+    // router.get("/api/restartPastillas", controllers.restartPastillas)
 
     // router.get("/api/:dni/info-consulta", controllers.pacientePrimerInicioSesion)
 

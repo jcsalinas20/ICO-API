@@ -16,7 +16,8 @@ var DiasParaTomar = new Schema({
 var DatosMedicamento = new Schema({
     dias: DiasParaTomar,
     hora: Array,
-    id: Number
+    id: Number,
+    pastillaTomada: Array
 })
 
 // Schema general del Paciente
