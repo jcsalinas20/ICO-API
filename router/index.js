@@ -21,7 +21,7 @@ module.exports = () => {
 
     router.get("/api/vaidacionToken", controllers.vaidacionToken)
 
-    // router.get("/api/restartPastillas", controllers.restartPastillas)
+    router.get("/api/restartPastillas", controllers.restartPastillas)
 
     // router.get("/api/:dni/info-consulta", controllers.pacientePrimerInicioSesion)
 

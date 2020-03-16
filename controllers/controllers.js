@@ -331,6 +331,15 @@ exports.vaidacionToken = async (req, res) => {
     res.send(JSON.stringify(respuesta, null, 2))
 }
 
+exports.restartPastillas = async (req, res) => {
+    let fecha = moment().format("HH:mm")
+    let respuesta = {
+        hora: fecha
+    }
+    res.header("Content-Type", "application/json")
+    res.send(JSON.stringify(respuesta, null, 2))
+}
+
 function cambiarOrdenDate(str) {
     fecha = str.split("-")
     var dia = ""
