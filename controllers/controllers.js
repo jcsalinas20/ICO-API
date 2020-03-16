@@ -68,31 +68,43 @@ exports.pacienteListaMedicinas = (req, res) => {
         } else {
             let med = []
             for (let i = 0; i < doc.medicamentos.length; i++) {
-                let medicamento = {}
-                medicamento["id"] = doc.medicamentos[i].id
-                const doc_medicamento = await Medicamentos.findOne(
-                    {
-                        id: doc.medicamentos[i].id
-                    },
-                    function (err, res) {
-                        return res
+                for (let j = 0; j < doc.medicamentos[i].hora.length; j++) {
+                    let medicamento = {}
+                    medicamento["id"] = doc.medicamentos[i].id
+                    const doc_medicamento = await Medicamentos.findOne(
+                        {
+                            id: doc.medicamentos[i].id
+                        },
+                        function (err, res) {
+                            return res
+                        }
+                    )
+                    medicamento['nombre'] = doc_medicamento.nombre
+                    medicamento['imagen'] = doc_medicamento.imagen
+                    const dias = {
+                        lunes: doc.medicamentos[i].dias.lunes,
+                        martes: doc.medicamentos[i].dias.martes,
+                        miercoles: doc.medicamentos[i].dias.miercoles,
+                        jueves: doc.medicamentos[i].dias.jueves,
+                        viernes: doc.medicamentos[i].dias.viernes,
+                        sabado: doc.medicamentos[i].dias.sabado,
+                        domingo: doc.medicamentos[i].dias.domingo
                     }
-                )
-                medicamento['nombre'] = doc_medicamento.nombre
-                medicamento['imagen'] = doc_medicamento.imagen
-                const dias = {
-                    lunes: doc.medicamentos[i].dias.lunes,
-                    martes: doc.medicamentos[i].dias.martes,
-                    miercoles: doc.medicamentos[i].dias.miercoles,
-                    jueves: doc.medicamentos[i].dias.jueves,
-                    viernes: doc.medicamentos[i].dias.viernes,
-                    sabado: doc.medicamentos[i].dias.sabado,
-                    domingo: doc.medicamentos[i].dias.domingo
+                    medicamento["dias"] = dias
+                    medicamento["hora"] = doc.medicamentos[i].hora[j]
+                    medicamento["pastillaTomada"] = doc.medicamentos[i].pastillaTomada[j]
+                    med = med.concat(medicamento)
                 }
-                medicamento["dias"] = dias
-                medicamento["horas"] = doc.medicamentos[i].hora
-                medicamento["pastillaTomada"] = doc.medicamentos[i].pastillaTomada
-                med = med.concat(medicamento)
+            }
+
+            for (let i = 0; i < med.length; i++) {
+                for (let j = 0; j < med.length - 1; j++) {
+                    if (med[j].hora > med[j + 1].hora) {
+                        let auxiliar = med[j]
+                        med[j] = med[j + 1]
+                        med[j + 1] = auxiliar
+                    }
+                }
             }
 
             let medicamentos = {
