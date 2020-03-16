@@ -75,12 +75,12 @@ exports.pacienteListaMedicinas = (req, res) => {
                         {
                             id: doc.medicamentos[i].id
                         },
-                        function (err, res) {
+                        function(err, res) {
                             return res
                         }
                     )
-                    medicamento['nombre'] = doc_medicamento.nombre
-                    medicamento['imagen'] = doc_medicamento.imagen
+                    medicamento["nombre"] = doc_medicamento.nombre
+                    medicamento["imagen"] = doc_medicamento.imagen
                     const dias = {
                         lunes: doc.medicamentos[i].dias.lunes,
                         martes: doc.medicamentos[i].dias.martes,
@@ -92,7 +92,8 @@ exports.pacienteListaMedicinas = (req, res) => {
                     }
                     medicamento["dias"] = dias
                     medicamento["hora"] = doc.medicamentos[i].hora[j]
-                    medicamento["pastillaTomada"] = doc.medicamentos[i].pastillaTomada[j]
+                    medicamento["pastillaTomada"] =
+                        doc.medicamentos[i].pastillaTomada[j]
                     med = med.concat(medicamento)
                 }
             }
@@ -114,6 +115,63 @@ exports.pacienteListaMedicinas = (req, res) => {
             res.header("Content-Type", "application/json")
             res.send(JSON.stringify(medicamentos, null, 2))
         }
+    })
+}
+
+exports.pacienteCambioEstadoPastilla = (req, res) => {
+    Pacientes.findOne({
+        token: req.params.token
+    }).exec(async function(err, doc) {
+        if (doc == null) {
+            res.header("Content-Type", "application/json")
+            res.send(
+                JSON.stringify(
+                    {
+                        respuesta: "No se ha podido cambiar el estado."
+                    },
+                    null,
+                    2
+                )
+            )
+            return
+        }
+        for (let i = 0; i < doc.medicamentos.length; i++) {
+            if (doc.medicamentos[i].id == req.params.id) {
+                for (let j = 0; j < doc.medicamentos[i].hora.length; j++) {
+                    if (doc.medicamentos[i].hora[j] === req.params.hora) {
+                        const update = "medicamentos.$.pastillaTomada." + j
+                        const estado = req.params.estado === "true"
+                        await Pacientes.updateOne(
+                            {
+                                token: req.params.token,
+                                medicamentos: {
+                                    $elemMatch: {
+                                        id: doc.medicamentos[i].id
+                                    }
+                                }
+                            },
+                            {
+                                $set: {
+                                    [update]: estado
+                                }
+                            },
+                            function(err, doc_update) {}
+                        )
+                    }
+                }
+            }
+        }
+        res.header("Content-Type", "application/json")
+        res.send(
+            JSON.stringify(
+                {
+                    respuesta: "Estado cambiado."
+                },
+                null,
+                2
+            )
+        )
+        return
     })
 }
 

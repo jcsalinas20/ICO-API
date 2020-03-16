@@ -11,6 +11,8 @@ module.exports = () => {
 
     router.get("/api/:token/medicamentos", controllers.pacienteListaMedicinas)
 
+    router.get("/api/:token/cambioEstadoPastilla/:id/:hora/:estado", controllers.pacienteCambioEstadoPastilla)
+
     router.get("/api/:token/consultas", controllers.pacienteListaConsultas)
 
     router.get("/api/:token/historial-consultas", controllers.pacienteListaHistorialConsultas)
