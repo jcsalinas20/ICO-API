@@ -12,7 +12,7 @@ module.exports = {
 }
 
 var comprobarHoraPastillas = function call() {
-    fetch("http://localhost:3000/api/restartPastillas")
+    fetch("https://api-ico.herokuapp.com/api/restartPastillas")
         .then(function(res) {
             return res.json()
         })

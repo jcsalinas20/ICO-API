@@ -52,7 +52,7 @@ exports.loginPaciente = (req, res) => {
 exports.pacienteListaMedicinas = (req, res) => {
     Pacientes.findOne({
         token: req.params.token
-    }).exec(function(err, doc) {
+    }).exec(async function(err, doc) {
         if (doc === null) {
             respuesta = {
                 mensaje: "ERROR, no se encontró el Usuario"
@@ -70,6 +70,16 @@ exports.pacienteListaMedicinas = (req, res) => {
             for (let i = 0; i < doc.medicamentos.length; i++) {
                 let medicamento = {}
                 medicamento["id"] = doc.medicamentos[i].id
+                const doc_medicamento = await Medicamentos.findOne(
+                    {
+                        id: doc.medicamentos[i].id
+                    },
+                    function (err, res) {
+                        return res
+                    }
+                )
+                medicamento['nombre'] = doc_medicamento.nombre
+                medicamento['imagen'] = doc_medicamento.imagen
                 const dias = {
                     lunes: doc.medicamentos[i].dias.lunes,
                     martes: doc.medicamentos[i].dias.martes,
