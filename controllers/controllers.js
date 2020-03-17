@@ -234,8 +234,8 @@ exports.pacienteListaConsultas = (req, res) => {
                         }
                     )
                     consulta["id_consulta"] = doc_consultas[i].id_consulta
-                    consulta["nombre_doc"] = doc_doctor.nombre
-                    consulta["apellidos_doc"] = doc_doctor.apellidos
+                    consulta["doctor"] = `${doc_doctor.nombre} ${doc_doctor.apellidos}`
+                    consulta["apellidos_doc"] = 
                     consulta["planta"] = doc_doctor.planta
                     consulta["sala"] = doc_doctor.sala
                     consulta["nombre_hospital"] = doc_hospital.nombre

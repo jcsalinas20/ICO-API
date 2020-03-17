@@ -27,6 +27,14 @@ const hConsultasSchema = new Schema({
         type: String,
         trim: true
     },
+    planta: {
+        type: Number,
+        trim: true
+    },
+    sala: {
+        type: Number,
+        trim: true
+    },
     consultas: [infoConsulta]
 })
 
