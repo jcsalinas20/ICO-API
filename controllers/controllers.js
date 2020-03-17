@@ -215,17 +215,16 @@ exports.pacienteListaConsultas = (req, res) => {
 
             let con = []
             for (let i = 0; i < Object.keys(consultas).length; i++) {
-                const doc_doctor = await Doctores.findOne(
-                    {
-                        id_doctor: doc_consultas[i].id_doctor
-                    },
-                    function(err, res) {
-                        return res
-                    }
-                )
                 for (let j = 0; j < doc_consultas[i].consultas.length; j++) {
                     let consulta = {}
-                   
+                    const doc_doctor = await Doctores.findOne(
+                        {
+                            id_doctor: doc_consultas[i].id_doctor
+                        },
+                        function(err, res) {
+                            return res
+                        }
+                    )
                     const doc_hospital = await Hospitales.findOne(
                         {
                             id_hospital: doc_consultas[i].id_direccion
@@ -297,7 +296,7 @@ exports.pacienteListaHistorialConsultas = (req, res) => {
         }
         HistorialConsultas.find({
             id_paciente: doc_paciente.id_paciente
-        }).exec(function(err, doc_consultas) {
+        }).exec(async function(err, doc_consultas) {
             if (doc_consultas.length == 0) {
                 res.header("Content-Type", "application/json")
                 res.send(
@@ -321,15 +320,24 @@ exports.pacienteListaHistorialConsultas = (req, res) => {
             for (let i = 0; i < Object.keys(consultas).length; i++) {
                 for (let j = 0; j < doc_consultas[i].consultas.length; j++) {
                     let consulta = {}
+                    const doc_hospital = await Hospitales.findOne(
+                        {
+                            id_hospital: doc_consultas[i].id_direccion
+                        },
+                        function(err, res) {
+                            return res
+                        }
+                    )
                     consulta["id_consulta"] = doc_consultas[i].id_consulta
-                    consulta["id_paciente"] = doc_consultas[i].id_paciente
-                    consulta["id_direccion"] = doc_consultas[i].id_direccion
                     consulta["doctor"] = doc_consultas[i].doctor
+                    consulta["planta"] = doc_consultas[i].planta
+                    consulta["sala"] = doc_consultas[i].sala
+                    consulta["nombre_hospital"] = doc_hospital.nombre
+                    consulta["direccion"] = doc_hospital.direccion
                     consulta["hora"] = consultas[i][j].hora
                     consulta["dia"] = consultas[i][j].dia
                     consulta["asistido"] = consultas[i][j].asistido
                     consulta["notas"] = consultas[i][j].notas
-                    consulta["notas_doc"] = consultas[i][j].notas_doc
                     con = con.concat(consulta)
                 }
             }
