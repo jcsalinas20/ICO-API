@@ -245,7 +245,6 @@ exports.pacienteListaConsultas = (req, res) => {
                     consulta["dia"] = consultas[i][j].dia
                     consulta["asistido"] = consultas[i][j].asistido
                     consulta["notas"] = consultas[i][j].notas
-                    consulta["notas_doc"] = consultas[i][j].notas_doc
                     con = con.concat(consulta)
                 }
             }
