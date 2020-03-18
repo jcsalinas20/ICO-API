@@ -58,7 +58,7 @@ exports.getNoticias = async (req, res) => {
     let noticias = []
     for (let i = 0; i < titulos.length; i++) {
         let noticia = {}
-        noticia["titulo"] = titulos[i]
+        noticia["titulo"] = titulos[i].replace(/\\n/g, '')
         if (i % 2 == 0) {
             noticia["link"] = enlacesRight[contadorRight]
             noticia["imagen"] = imagenesRight[contadorRight]
@@ -69,6 +69,13 @@ exports.getNoticias = async (req, res) => {
             contadorLeft++
         }
         noticias[i] = noticia
+    }
+
+    for (let i = 0; i < noticias.length; i++) {
+        var json = JSON.stringify(noticias[i].titulo)
+        json = json.replace(/\\n/g, '')
+        json = json.replace("\"", "")
+        noticias[i].titulo = json.replace("\"", "")
     }
 
     res.header("Content-Type", "application/json")
