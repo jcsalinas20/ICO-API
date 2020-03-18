@@ -7,6 +7,73 @@ const Hospitales = require("../models/Hospitales")
 const Encriptation = require("../services/Encrypt")
 const Token = require("../services/Token")
 const moment = require("moment")
+const cheerio = require("cheerio")
+const request = require("request-promise")
+
+exports.getNoticias = async (req, res) => {
+    let imagenesRight = []
+    let enlacesRight = []
+    let imagenesLeft = []
+    let enlacesLeft = []
+    let titulos = []
+    const $ = await request({
+        url: process.env.URL_ICO,
+        transform: body => cheerio.load(body)
+    })
+    $(".mcnCaptionRightImageContent").each((i, el) => {
+        const chil = $(el)
+            .children()
+            .find("img")
+            .attr("src")
+        imagenesRight.push(chil)
+    })
+    $(".mcnCaptionRightImageContent").each((i, el) => {
+        const chil = $(el)
+            .find("a")
+            .attr("href")
+        enlacesRight.push(chil)
+    })
+    $(".mcnCaptionLeftImageContent").each((i, el) => {
+        const chil = $(el)
+            .children()
+            .find("img")
+            .attr("src")
+        imagenesLeft.push(chil)
+    })
+    $(".mcnCaptionLeftImageContent").each((i, el) => {
+        const chil = $(el)
+            .find("a")
+            .attr("href")
+        enlacesLeft.push(chil)
+    })
+    $("h2.null").each((i, el) => {
+        const chil = $(el)
+        if (chil.html() != "&#xA0;") {
+            titulos.push(chil.text())
+        }
+    })
+
+    contadorLeft = 0
+    contadorRight = 0
+    let noticias = []
+    for (let i = 0; i < titulos.length; i++) {
+        let noticia = {}
+        noticia["titulo"] = titulos[i]
+        if (i % 2 == 0) {
+            noticia["link"] = enlacesRight[contadorRight]
+            noticia["imagen"] = imagenesRight[contadorRight]
+            contadorRight++
+        } else {
+            noticia["link"] = enlacesLeft[contadorLeft]
+            noticia["imagen"] = imagenesLeft[contadorLeft]
+            contadorLeft++
+        }
+        noticias[i] = noticia
+    }
+
+    res.header("Content-Type", "application/json")
+    res.send(JSON.stringify(noticias, null, 2))
+}
 
 exports.getPerfil = (req, res) => {
     Pacientes.findOne({
@@ -36,13 +103,13 @@ exports.getPerfil = (req, res) => {
                     return doc
                 }
             )
-            perfil['nombre'] = `${doc.nombre} ${doc.apellidos}`
-            perfil['dni'] = doc.dni
-            perfil['foto'] = doc.foto
-            perfil['fecha_nacimiento'] = doc.fecha_nacimiento
-            perfil['genero'] = doc.genero
-            perfil['consultasCount'] = consultasCount.length
-            perfil['historialConsultasCount'] = historialConsultasCount.length
+            perfil["nombre"] = `${doc.nombre} ${doc.apellidos}`
+            perfil["dni"] = doc.dni
+            perfil["foto"] = doc.foto
+            perfil["fecha_nacimiento"] = doc.fecha_nacimiento
+            perfil["genero"] = doc.genero
+            perfil["consultasCount"] = consultasCount.length
+            perfil["historialConsultasCount"] = historialConsultasCount.length
             res.header("Content-Type", "application/json")
             res.send(JSON.stringify(perfil, null, 2))
         }

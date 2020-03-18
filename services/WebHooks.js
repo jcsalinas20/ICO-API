@@ -23,6 +23,9 @@ var comprobarHoraPastillas = function call() {
             await sleep(60000)
             comprobarHoraPastillas()
         })
+        .catch(function() {
+            console.log("Error WebHook Pastillas")
+        })
 }
 
 var comprobarHoraToken = function call() {
@@ -32,11 +35,14 @@ var comprobarHoraToken = function call() {
         })
         .then(async function(myJson) {
             // console.log(myJson.hora)
-            if (myJson.hora === "00:00:01") {
+            if (myJson.hora === "00:01") {
                 deleteToken()
             }
-            await sleep(1000)
+            await sleep(60000)
             comprobarHoraToken()
+        })
+        .catch(function() {
+            console.log("Error WebHook Tokens")
         })
 }
 
@@ -60,34 +66,36 @@ function deleteToken() {
 }
 
 function restartPastillas() {
-    Pacientes.find({}, async function (err, doc) {
+    Pacientes.find({}, async function(err, doc) {
         for (let i = 0; i < doc.length; i++) {
             var token = doc[i].token
             for (let j = 0; j < doc[i].medicamentos.length; j++) {
                 var id_medicamento = doc[i].medicamentos[j].id
                 var pastillas = []
-                for (let k = 0; k < doc[i].medicamentos[j].pastillaTomada.length; k++) {
+                for (
+                    let k = 0;
+                    k < doc[i].medicamentos[j].pastillaTomada.length;
+                    k++
+                ) {
                     pastillas.push(false)
                 }
                 await Pacientes.findOneAndUpdate(
                     {
                         token: token,
-                        medicamentos:
-                            { $elemMatch : 
-                                { 
-                                id: id_medicamento 
-                                } 
+                        medicamentos: {
+                            $elemMatch: {
+                                id: id_medicamento
                             }
+                        }
                     },
                     {
-                        'medicamentos.$.pastillaTomada': pastillas
+                        "medicamentos.$.pastillaTomada": pastillas
                     },
-                    function(err, doc) {
-                    }
+                    function(err, doc) {}
                 )
             }
         }
-        console.log('Pastillas reiniciadas.')
+        console.log("Pastillas reiniciadas.")
     })
 }
 
