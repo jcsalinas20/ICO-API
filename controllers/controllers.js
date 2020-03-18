@@ -8,20 +8,43 @@ const Encriptation = require("../services/Encrypt")
 const Token = require("../services/Token")
 const moment = require("moment")
 
-exports.getDoctor = (req, res) => {
-    let respuesta
-    Doctores.findOne({
-        username: req.params.username
-    }).exec(function(err, doc) {
+exports.getPerfil = (req, res) => {
+    Pacientes.findOne({
+        token: req.params.token
+    }).exec(async function(err, doc) {
         if (doc === null) {
-            respuesta = {
-                mensaje: "ERROR, no se encontró el Doctor."
+            let respuesta = {
+                mensaje: "ERROR, no se encontró el Paciente."
             }
             res.header("Content-Type", "application/json")
             res.send(JSON.stringify(respuesta, null, 2))
         } else {
+            let perfil = {}
+            const consultasCount = await Consultas.find(
+                {
+                    id_paciente: doc.id_paciente
+                },
+                function(err, doc) {
+                    return doc
+                }
+            )
+            const historialConsultasCount = await HistorialConsultas.find(
+                {
+                    id_paciente: doc.id_paciente
+                },
+                function(err, doc) {
+                    return doc
+                }
+            )
+            perfil['nombre'] = `${doc.nombre} ${doc.apellidos}`
+            perfil['dni'] = doc.dni
+            perfil['foto'] = doc.foto
+            perfil['fecha_nacimiento'] = doc.fecha_nacimiento
+            perfil['genero'] = doc.genero
+            perfil['consultasCount'] = consultasCount.length
+            perfil['historialConsultasCount'] = historialConsultasCount.length
             res.header("Content-Type", "application/json")
-            res.send(JSON.stringify(doc, null, 2))
+            res.send(JSON.stringify(perfil, null, 2))
         }
     })
 }
@@ -234,9 +257,11 @@ exports.pacienteListaConsultas = (req, res) => {
                         }
                     )
                     consulta["id_consulta"] = doc_consultas[i].id_consulta
-                    consulta["doctor"] = `${doc_doctor.nombre} ${doc_doctor.apellidos}`
-                    consulta["apellidos_doc"] = 
-                    consulta["planta"] = doc_doctor.planta
+                    consulta[
+                        "doctor"
+                    ] = `${doc_doctor.nombre} ${doc_doctor.apellidos}`
+                    consulta["apellidos_doc"] = consulta["planta"] =
+                        doc_doctor.planta
                     consulta["sala"] = doc_doctor.sala
                     consulta["nombre_hospital"] = doc_hospital.nombre
                     consulta["direccion"] = doc_hospital.direccion

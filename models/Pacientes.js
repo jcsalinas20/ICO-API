@@ -58,6 +58,10 @@ const pacientesSchema = new Schema({
         type: String,
         trim: true
     },
+    genero: {
+        type: String,
+        trim: true
+    },
     medicamentos: [DatosMedicamento]
 })
 
