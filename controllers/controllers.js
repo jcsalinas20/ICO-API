@@ -69,13 +69,13 @@ var asdf = async function(res) {
             URL = enlacesLeft[contadorLeft]
             contadorLeft++
         }
-        console.log(URL)
+        console.log(i, URL)
         try {
             const text = await cheerioCall(URL)
             texto.push(text)
         } catch (err) {
             await sleep(5000)
-            asdf()
+            asdf(res)
         }
     }
 
