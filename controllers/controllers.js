@@ -68,6 +68,7 @@ exports.getNoticias = async (req, res) => {
         console.log(URL)
         const text = await cheerioCall(URL)
         texto.push(text)
+        await sleep(2000)
     }
 
     contadorLeft = 0
@@ -580,4 +581,10 @@ function cambiarOrdenDate(str) {
         dia += fecha[i]
     }
     return dia
+}
+
+function sleep(ms) {
+    return new Promise(resolve => {
+        setTimeout(resolve, ms)
+    })
 }
