@@ -16,6 +16,7 @@ exports.getNoticias = async (req, res) => {
     let imagenesLeft = []
     let enlacesLeft = []
     let titulos = []
+    let texto = []
     const $ = await request({
         url: process.env.URL_ICO,
         transform: body => cheerio.load(body)
@@ -53,12 +54,27 @@ exports.getNoticias = async (req, res) => {
         }
     })
 
+    var contadorLeft = 0
+    var contadorRight = 0
+    for (let i = 0; i < titulos.length; i++) {
+        var URL
+        if (i % 2 == 0) {
+            URL = enlacesRight[contadorRight]
+            contadorRight++
+        } else {
+            URL = enlacesLeft[contadorLeft]
+            contadorLeft++
+        }
+        const text = await cheerioCall(URL)
+        texto.push(text)
+    }
+
     contadorLeft = 0
     contadorRight = 0
     let noticias = []
     for (let i = 0; i < titulos.length; i++) {
         let noticia = {}
-        noticia["titulo"] = titulos[i].replace(/\\n/g, '')
+        noticia["titulo"] = titulos[i].replace(/\\n/g, "")
         if (i % 2 == 0) {
             noticia["link"] = enlacesRight[contadorRight]
             noticia["imagen"] = imagenesRight[contadorRight]
@@ -68,18 +84,28 @@ exports.getNoticias = async (req, res) => {
             noticia["imagen"] = imagenesLeft[contadorLeft]
             contadorLeft++
         }
+        noticia['texto'] = texto[i]
         noticias[i] = noticia
     }
 
     for (let i = 0; i < noticias.length; i++) {
         var json = JSON.stringify(noticias[i].titulo)
-        json = json.replace(/\\n/g, '')
-        json = json.replace("\"", "")
-        noticias[i].titulo = json.replace("\"", "")
+        json = json.replace(/\\n/g, "")
+        json = json.replace('"', "")
+        noticias[i].titulo = json.replace('"', "")
     }
 
     res.header("Content-Type", "application/json")
     res.send(JSON.stringify(noticias, null, 2))
+}
+
+async function cheerioCall(URL) {
+    const $ = await request({
+        url: URL,
+        transform: body => cheerio.load(body)
+    })
+
+    return $(".basic_text_peq.pd-15").text()
 }
 
 exports.getPerfil = (req, res) => {
