@@ -11,6 +11,10 @@ const cheerio = require("cheerio")
 const request = require("request-promise")
 
 exports.getNoticias = async (req, res) => {
+    asdf(res)
+}
+
+var asdf = async function(res) {
     let imagenesRight = []
     let enlacesRight = []
     let imagenesLeft = []
@@ -66,9 +70,13 @@ exports.getNoticias = async (req, res) => {
             contadorLeft++
         }
         console.log(URL)
-        const text = await cheerioCall(URL)
-        texto.push(text)
-        await sleep(2000)
+        try {
+            const text = await cheerioCall(URL)
+            texto.push(text)
+        } catch (err) {
+            await sleep(5000)
+            asdf()
+        }
     }
 
     contadorLeft = 0
@@ -86,7 +94,7 @@ exports.getNoticias = async (req, res) => {
             noticia["imagen"] = imagenesLeft[contadorLeft]
             contadorLeft++
         }
-        noticia['texto'] = texto[i]
+        noticia["texto"] = texto[i]
         noticias[i] = noticia
     }
 
