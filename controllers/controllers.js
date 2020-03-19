@@ -65,6 +65,7 @@ exports.getNoticias = async (req, res) => {
             URL = enlacesLeft[contadorLeft]
             contadorLeft++
         }
+        console.log(URL)
         const text = await cheerioCall(URL)
         texto.push(text)
     }
