@@ -92,9 +92,10 @@ exports.getPerfil = (req, res) => {
             )
             var historialConsultasCount = 0
             for (let i = 0; i < historialConsultas.length; i++) {
-                historialConsultasCount += historialConsultas[i].consultas.length
+                historialConsultasCount +=
+                    historialConsultas[i].consultas.length
             }
-            
+
             perfil["nombre"] = `${doc.nombre} ${doc.apellidos}`
             perfil["dni"] = doc.dni
             perfil["foto"] = doc.foto
@@ -120,6 +121,7 @@ exports.loginPaciente = (req, res) => {
                 mensaje: "ERROR, no se encontró el Usuario."
             }
         } else {
+            Token.expireDate(doc)
             const tokenHash = await Token.create(doc)
             respuesta = {
                 mensaje: "El login se realizó correctamente.",
@@ -513,10 +515,22 @@ exports.pacienteCambioPassword = (req, res) => {
 }
 
 exports.vaidacionToken = async (req, res) => {
-    // let fecha = moment().format('DD-HH:mm:ss')
-    let fecha = moment().format("HH:mm:ss")
+    let expireTokens = []
+    const pacientes = await Pacientes.find({}, function(err, doc) {
+        return doc
+    })
+
+    for (let i = 0; i < pacientes.length; i++) {
+        if (pacientes[i].expireToken != "null") {
+            let paciente = {}
+            paciente['dni'] = pacientes[i].dni
+            paciente['date'] = pacientes[i].expireToken
+            expireTokens.push(paciente)
+        }
+    }
+
     let respuesta = {
-        hora: fecha
+        expireToken: expireTokens
     }
     res.header("Content-Type", "application/json")
     res.send(JSON.stringify(respuesta, null, 2))

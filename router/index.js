@@ -8,7 +8,7 @@ module.exports = () => {
     
     router.get("/api/paciente/auth/:dni/:password", controllers.loginPaciente)
     
-    router.get("/api/:token/logout", controllers.cerrarSesion)
+    // router.get("/api/:token/logout", controllers.cerrarSesion)
     
     router.get("/api/:token/perfil", controllers.getPerfil)
 

@@ -29,21 +29,22 @@ var comprobarHoraPastillas = function call() {
 }
 
 var comprobarHoraToken = function call() {
-    fetch("https://api-ico.herokuapp.com/api/vaidacionToken")
-        .then(function(res) {
-            return res.json()
-        })
-        .then(async function(myJson) {
-            // console.log(myJson.hora)
-            if (myJson.hora === "00:01") {
-                deleteToken()
-            }
-            await sleep(60000)
-            comprobarHoraToken()
-        })
-        .catch(function() {
-            console.log("Error WebHook Tokens")
-        })
+    // fetch("https://api-ico.herokuapp.com/api/vaidacionToken")
+    // fetch("http://localhost:3000/api/vaidacionToken")
+    //     .then(function(res) {
+    //         return res.json()
+    //     })
+    //     .then(async function(myJson) {
+    //         // console.log(myJson.hora)
+    //         if (myJson.hora === "00:01") {
+    //             deleteToken()
+    //         }
+    //         await sleep(5000)
+    //         comprobarHoraToken()
+    //     })
+    //     .catch(function() {
+    //         console.log("Error WebHook Tokens")
+    //     })
 }
 
 function deleteToken() {

@@ -5,22 +5,45 @@ const uuidv4 = require("uuid")
 const Pacientes = require("../models/Pacientes")
 
 module.exports = {
-    create: async function (body) {
+    create: async function(body) {
         const ORDER_ID = await getOrderId()
         const TIMESTAMP = await getMoment()
 
-        const token = await createHash(ORDER_ID, TIMESTAMP, body.dni, body.password)
+        const token = await createHash(
+            ORDER_ID,
+            TIMESTAMP,
+            body.dni,
+            body.password
+        )
 
         await this.putToken(token, body)
 
         return token
     },
-    putToken: async function (token, body) {
+    putToken: async function(token, body) {
         const filter = {
             dni: body.dni
         }
         const update = {
             token: token
+        }
+        await Pacientes.findOneAndUpdate(filter, update, {
+            useFindAndModify: false
+        })
+    },
+    expireDate: async function(body) {
+        const date = moment().format("DD-MM-YYYY")
+        var new_date = moment(date, "DD-MM-YYYY").add(1, "days")
+        var day = new_date.format("DD")
+        var month = new_date.format("MM")
+        var year = new_date.format("YYYY")
+        const expire = day + "-" + month + "-" + year
+
+        const filter = {
+            dni: body.dni
+        }
+        const update = {
+            expireToken: expire
         }
         await Pacientes.findOneAndUpdate(filter, update, {
             useFindAndModify: false
