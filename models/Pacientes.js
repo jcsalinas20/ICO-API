@@ -46,6 +46,10 @@ const pacientesSchema = new Schema({
         type: String,
         trim: true
     },
+    expireToken: {
+        type: String,
+        trim: true
+    },
     foto: {
         type: String,
         trim: true
