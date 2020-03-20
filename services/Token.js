@@ -33,11 +33,11 @@ module.exports = {
     },
     expireDate: async function(body) {
         const date = moment().format("DD-MM-YYYY")
-        var new_date = moment(date, "DD-MM-YYYY").add(1, "days")
+        var new_date = moment(date, "DD-MM-YYYY").add(30, "days")
         var day = new_date.format("DD")
         var month = new_date.format("MM")
         var year = new_date.format("YYYY")
-        const expire = day + "-" + month + "-" + year
+        const expire = day + "-" + month + "-" + year + ":00"
 
         const filter = {
             dni: body.dni

@@ -1,6 +1,7 @@
 "use strict"
 const fetch = require("node-fetch")
 const Pacientes = require("../models/Pacientes")
+const moment = require("moment")
 
 module.exports = {
     validacionToken: function() {
@@ -29,29 +30,36 @@ var comprobarHoraPastillas = function call() {
 }
 
 var comprobarHoraToken = function call() {
-    // fetch("https://api-ico.herokuapp.com/api/vaidacionToken")
-    // fetch("http://localhost:3000/api/vaidacionToken")
-    //     .then(function(res) {
-    //         return res.json()
-    //     })
-    //     .then(async function(myJson) {
-    //         // console.log(myJson.hora)
-    //         if (myJson.hora === "00:01") {
-    //             deleteToken()
-    //         }
-    //         await sleep(5000)
-    //         comprobarHoraToken()
-    //     })
-    //     .catch(function() {
-    //         console.log("Error WebHook Tokens")
-    //     })
+    fetch("https://api-ico.herokuapp.com/api/vaidacionToken")
+        .then(function(res) {
+            return res.json()
+        })
+        .then(async function(myJson) {
+            for (let i = 0; i < myJson.expireToken.length; i++) {
+                if (myJson.expireToken[i].date === getMomentNow()) {
+                    deleteToken(myJson.expireToken[i].dni)
+                }
+            }
+            await sleep(3600000)
+            comprobarHoraToken()
+        })
+        .catch(function() {
+            console.log("Error WebHook Tokens")
+        })
 }
 
-function deleteToken() {
-    Pacientes.updateMany(
-        {},
+function getMomentNow() {
+    return moment().format("DD-MM-YYYY:HH")
+}
+
+function deleteToken(dni) {
+    Pacientes.updateOne(
         {
-            token: "null"
+            dni: dni
+        },
+        {
+            token: "null",
+            expireToken: "null"
         },
         {
             new: true
