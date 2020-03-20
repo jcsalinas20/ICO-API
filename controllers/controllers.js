@@ -11,111 +11,51 @@ const cheerio = require("cheerio")
 const request = require("request-promise")
 
 exports.getNoticias = async (req, res) => {
-    asdf(res)
-}
-
-var asdf = async function(res) {
-    let imagenesRight = []
-    let enlacesRight = []
-    let imagenesLeft = []
-    let enlacesLeft = []
+    let enlaces = []
+    let imagenes = []
     let titulos = []
-    let texto = []
     const $ = await request({
         url: process.env.URL_ICO,
         transform: body => cheerio.load(body)
     })
-    $(".mcnCaptionRightImageContent").each((i, el) => {
-        const chil = $(el)
-            .children()
-            .find("img")
-            .attr("src")
-        imagenesRight.push(chil)
-    })
-    $(".mcnCaptionRightImageContent").each((i, el) => {
-        const chil = $(el)
-            .find("a")
-            .attr("href")
-        enlacesRight.push(chil)
-    })
-    $(".mcnCaptionLeftImageContent").each((i, el) => {
-        const chil = $(el)
-            .children()
-            .find("img")
-            .attr("src")
-        imagenesLeft.push(chil)
-    })
-    $(".mcnCaptionLeftImageContent").each((i, el) => {
-        const chil = $(el)
-            .find("a")
-            .attr("href")
-        enlacesLeft.push(chil)
-    })
-    $("h2.null").each((i, el) => {
-        const chil = $(el)
-        if (chil.html() != "&#xA0;") {
-            titulos.push(chil.text())
+    $("td").each((i, el) => {
+        const chil = $(el).attr("colspan")
+        if (chil == 2) {
+            titulos.push(
+                $(el)
+                    .find("a")
+                    .text()
+            )
+            imagenes.push(
+                $(el)
+                    .find("img")
+                    .attr("src")
+            )
+            enlaces.push(
+                $(el)
+                    .find("a")
+                    .attr("href")
+            )
         }
     })
 
-    var contadorLeft = 0
-    var contadorRight = 0
-    for (let i = 0; i < titulos.length; i++) {
-        var URL
-        if (i % 2 == 0) {
-            URL = enlacesRight[contadorRight]
-            contadorRight++
-        } else {
-            URL = enlacesLeft[contadorLeft]
-            contadorLeft++
-        }
-        console.log(i, URL)
-        try {
-            const text = await cheerioCall(URL)
-            texto.push(text)
-        } catch (err) {
-            await sleep(5000)
-            asdf(res)
-        }
-    }
-
-    contadorLeft = 0
-    contadorRight = 0
     let noticias = []
     for (let i = 0; i < titulos.length; i++) {
         let noticia = {}
-        noticia["titulo"] = titulos[i].replace(/\\n/g, "")
-        if (i % 2 == 0) {
-            noticia["link"] = enlacesRight[contadorRight]
-            noticia["imagen"] = imagenesRight[contadorRight]
-            contadorRight++
-        } else {
-            noticia["link"] = enlacesLeft[contadorLeft]
-            noticia["imagen"] = imagenesLeft[contadorLeft]
-            contadorLeft++
+        noticia["titulo"] = titulos[i]
+        noticia["imagen"] = imagenes[i]
+        noticia["link"] = enlaces[i]
+        if (noticia.titulo != "") {
+            noticias.push(noticia)
         }
-        noticia["texto"] = texto[i]
-        noticias[i] = noticia
     }
 
     for (let i = 0; i < noticias.length; i++) {
-        var json = JSON.stringify(noticias[i].titulo)
-        json = json.replace(/\\n/g, "")
-        json = json.replace('"', "")
-        noticias[i].titulo = json.replace('"', "")
+        noticias[i].titulo = noticias[i].titulo.replace("+ Més informació", "")
     }
 
     res.header("Content-Type", "application/json")
     res.send(JSON.stringify(noticias, null, 2))
-}
-
-async function cheerioCall(URL) {
-    const $ = await request({
-        url: URL,
-        transform: body => cheerio.load(body)
-    })
-
-    return $(".basic_text_peq.pd-15").text()
 }
 
 exports.getPerfil = (req, res) => {
@@ -589,10 +529,4 @@ function cambiarOrdenDate(str) {
         dia += fecha[i]
     }
     return dia
-}
-
-function sleep(ms) {
-    return new Promise(resolve => {
-        setTimeout(resolve, ms)
-    })
 }
