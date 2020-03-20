@@ -70,7 +70,7 @@ exports.getPerfil = (req, res) => {
             res.send(JSON.stringify(respuesta, null, 2))
         } else {
             let perfil = {}
-            const consultasCount = await Consultas.find(
+            const consultas = await Consultas.find(
                 {
                     id_paciente: doc.id_paciente
                 },
@@ -78,7 +78,11 @@ exports.getPerfil = (req, res) => {
                     return doc
                 }
             )
-            const historialConsultasCount = await HistorialConsultas.find(
+            var consultasCount = 0
+            for (let i = 0; i < consultas.length; i++) {
+                consultasCount += consultas[i].consultas.length
+            }
+            const historialConsultas = await HistorialConsultas.find(
                 {
                     id_paciente: doc.id_paciente
                 },
@@ -86,13 +90,18 @@ exports.getPerfil = (req, res) => {
                     return doc
                 }
             )
+            var historialConsultasCount = 0
+            for (let i = 0; i < historialConsultas.length; i++) {
+                historialConsultasCount += historialConsultas[i].consultas.length
+            }
+            
             perfil["nombre"] = `${doc.nombre} ${doc.apellidos}`
             perfil["dni"] = doc.dni
             perfil["foto"] = doc.foto
             perfil["fecha_nacimiento"] = doc.fecha_nacimiento
             perfil["genero"] = doc.genero
-            perfil["consultasCount"] = consultasCount.length
-            perfil["historialConsultasCount"] = historialConsultasCount.length
+            perfil["consultasCount"] = consultasCount
+            perfil["historialConsultasCount"] = historialConsultasCount
             res.header("Content-Type", "application/json")
             res.send(JSON.stringify(perfil, null, 2))
         }
