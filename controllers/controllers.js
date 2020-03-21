@@ -133,6 +133,36 @@ exports.loginPaciente = (req, res) => {
     })
 }
 
+exports.cerrarSesion = (req, res) => {
+    Pacientes.updateOne(
+        {
+            dni: req.params.dni
+        },
+        {
+            token: "null",
+            expireToken: "null"
+        },
+        {
+            new: true
+        },
+        (err, raw) => {
+            if (err) {
+                respuesta = {
+                    mensaje: "No se ha podido cerrar sesión."
+                }
+                res.header("Content-Type", "application/json")
+                res.send(JSON.stringify(respuesta, null, 2))
+            } else {
+                respuesta = {
+                    mensaje: "Se ha cerrado la sesión."
+                }
+                res.header("Content-Type", "application/json")
+                res.send(JSON.stringify(respuesta, null, 2))
+            }
+        }
+    )
+}
+
 exports.pacienteListaMedicinas = (req, res) => {
     Pacientes.findOne({
         token: req.params.token
