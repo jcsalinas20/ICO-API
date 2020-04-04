@@ -10,32 +10,6 @@ const moment = require("moment")
 const cheerio = require("cheerio")
 const request = require("request-promise")
 
-exports.cambioIdioma = async (req, res) => {
-    const user = await Pacientes.findOne({ token: req.params.token }, function(
-        err,
-        raw
-    ) {
-        if (err) {
-            return false
-        }
-        return raw
-    })
-    if (user != null) {
-        await Pacientes.updateOne(
-            { token: req.params.token },
-            { leng: req.params.leng },
-            function(err, raw) {}
-        )
-        res.header("Content-Type", "application/json")
-        res.send(JSON.stringify({ mensaje: "Idioma cambiado." }, null, 2))
-    } else {
-        res.header("Content-Type", "application/json")
-        res.send(
-            JSON.stringify({ mensaje: "No se ha encontrado el user." }, null, 2)
-        )
-    }
-}
-
 exports.getNoticias = async (req, res) => {
     let enlaces = []
     let imagenes = []

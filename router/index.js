@@ -24,8 +24,6 @@ module.exports = () => {
 
     router.get("/api/:token/cambio-password/:password", controllers.pacienteCambioPassword)
 
-    router.get("/api/:token/idioma/:leng", controllers.cambioIdioma)
-
     router.get("/api/vaidacionToken", controllers.vaidacionToken)
 
     router.get("/api/restartPastillas", controllers.restartPastillas)
