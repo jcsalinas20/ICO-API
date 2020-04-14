@@ -10,6 +10,29 @@ const moment = require("moment")
 const cheerio = require("cheerio")
 const request = require("request-promise")
 
+exports.canviarIdioma = async (req, res) => {
+    await Pacientes.findOne({ token: req.params.token }, async function(
+        err,
+        raw
+    ) {
+        console.log(raw)
+        if (raw != null) {
+            await Pacientes.updateOne(
+                { token: req.params.token },
+                { leng: req.params.idioma },
+                function(err, raw) {}
+            )
+            res.header("Content-Type", "application/json")
+            res.send(JSON.stringify({ mensaje: "Idioma cambiado." }, null, 2))
+        } else {
+            res.header("Content-Type", "application/json")
+            res.send(
+                JSON.stringify({ mensaje: "No se ha encontrado el user." }, null, 2)
+            )
+        }
+    })
+}
+
 exports.getNoticias = async (req, res) => {
     let enlaces = []
     let imagenes = []

@@ -4,6 +4,8 @@ const controllers = require("../controllers/controllers")
 
 module.exports = () => {
 
+    router.get("/api/:token/idioma/:idioma", controllers.canviarIdioma)
+
     router.get("/api/noticias", controllers.getNoticias)
     
     router.get("/api/paciente/auth/:dni/:password", controllers.loginPaciente)

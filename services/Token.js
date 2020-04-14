@@ -20,12 +20,12 @@ module.exports = {
 
         return token
     },
-    putToken: async function(jwt, body) {
+    putToken: async function(token, body) {
         const filter = {
             dni: body.dni
         }
         const update = {
-            token: jwt
+            token: token
         }
         await Pacientes.findOneAndUpdate(filter, update, {
             useFindAndModify: false
