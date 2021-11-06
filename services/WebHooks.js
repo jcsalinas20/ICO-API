@@ -13,7 +13,7 @@ module.exports = {
 }
 
 var comprobarHoraPastillas = function call() {
-    fetch("https://api-ico.herokuapp.com/api/restartPastillas")
+    fetch("https://ico-project-api.herokuapp.com/api/restartPastillas")
         .then(function(res) {
             return res.json()
         })
@@ -30,7 +30,7 @@ var comprobarHoraPastillas = function call() {
 }
 
 var comprobarHoraToken = function call() {
-    fetch("https://api-ico.herokuapp.com/api/vaidacionToken")
+    fetch("https://ico-project-api.herokuapp.com/api/vaidacionToken")
         .then(function(res) {
             return res.json()
         })

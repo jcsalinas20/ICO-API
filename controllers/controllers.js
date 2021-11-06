@@ -41,25 +41,10 @@ exports.getNoticias = async (req, res) => {
         url: process.env.URL_ICO,
         transform: body => cheerio.load(body)
     })
-    $("td").each((i, el) => {
-        const chil = $(el).attr("colspan")
-        if (chil == 2) {
-            titulos.push(
-                $(el)
-                    .find("a")
-                    .text()
-            )
-            imagenes.push(
-                $(el)
-                    .find("img")
-                    .attr("src")
-            )
-            enlaces.push(
-                $(el)
-                    .find("a")
-                    .attr("href")
-            )
-        }
+    $("td[valign='top'][class='mcnCaptionBlockInner']").each((i, parent) => {
+        titulos.push($(parent).find("a").attr("href"))
+        imagenes.push($(parent).find("img").attr("src"))
+        enlaces.push($(parent).find("h2").text())
     })
 
     let noticias = []
@@ -72,7 +57,7 @@ exports.getNoticias = async (req, res) => {
             noticias.push(noticia)
         }
     }
-
+    console.log(noticias)
     for (let i = 0; i < noticias.length; i++) {
         noticias[i].titulo = noticias[i].titulo.replace("+ Més informació", "")
     }
