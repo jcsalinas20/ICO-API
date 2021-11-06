@@ -42,9 +42,9 @@ exports.getNoticias = async (req, res) => {
         transform: body => cheerio.load(body)
     })
     $("td[valign='top'][class='mcnCaptionBlockInner']").each((i, parent) => {
-        titulos.push($(parent).find("a").attr("href"))
+        titulos.push($(parent).find("h2").text())
         imagenes.push($(parent).find("img").attr("src"))
-        enlaces.push($(parent).find("h2").text())
+        enlaces.push($(parent).find("a").attr("href"))
     })
 
     let noticias = []
